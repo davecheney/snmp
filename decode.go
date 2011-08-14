@@ -15,39 +15,16 @@ func decode(data []byte) (interface{}, os.Error) {
 	}
 	choice := m.Data.FullBytes[0]
 	switch choice {
-	case 0xa0:
-		// GetRequest
-		request := new(GetRequest)
-		// hack ANY -> IMPLICIT SEQUENCE
-		m.Data.FullBytes[0] = 0x30
-		_, err = asn1.Unmarshal(m.Data.FullBytes, request)
-		if err != nil {
-			return nil, fmt.Errorf("%#v, %#v, %s", m.Data.FullBytes, request, err)
-		}
-		return request, nil
-	case 0xa1:
-                // GetNextRequest
-                request := new(GetRequest)
-                // hack ANY -> IMPLICIT SEQUENCE
-                m.Data.FullBytes[0] = 0x30
-                _, err = asn1.Unmarshal(m.Data.FullBytes, request)
-                if err != nil {
-                        return nil, fmt.Errorf("%#v, %#v, %s", m.Data.FullBytes, request, err)
-                }
-                return request, nil
-	
-	case 0xa2:
+	case 0xa0, 0xa1, 0xa2:
 		// Response
-		response := new(Response)
+		pdu := new(PDU)
 		// hack ANY -> IMPLICIT SEQUENCE
 		m.Data.FullBytes[0] = 0x30
-		_, err = asn1.Unmarshal(m.Data.FullBytes, response)
+		_, err = asn1.Unmarshal(m.Data.FullBytes, pdu)
 		if err != nil {
-			return nil, fmt.Errorf("%#v, %#v, %s", m.Data.FullBytes, response, err)
+			return nil, fmt.Errorf("%#v, %#v, %s", m.Data.FullBytes, pdu, err)
 		}
-		return response, nil
-	default:
-		return nil, fmt.Errorf("Unknown CHOICE: %x", choice)
+		return pdu, nil
 	}
-	panic("Unpossible!")
+	return nil, fmt.Errorf("Unknown CHOICE: %x", choice)
 }

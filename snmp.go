@@ -9,18 +9,6 @@ import (
 
 type OctetString []byte
 
-type VarBind struct {
-	Name  asn1.ObjectIdentifier
-	Value interface{}
-}
-
-type GetRequest struct {
-	RequestId   int32
-	ErrorStatus int
-	ErrorIndex  int
-	VarBindList []VarBind
-}
-
 type Message struct {
 	Version   int
 	Community OctetString
@@ -65,20 +53,6 @@ func Null() asn1.RawValue {
 	}
 }
 
-type GetNextRequest struct {
-	RequestId   int32
-	ErrorStatus int
-	ErrorIndex  int
-	VarBindList []VarBind
-}
-
-type Response struct {
-	RequestId   int32
-	ErrorStatus int
-	ErrorIndex  int
-	VarBindList []VarBind
-}
-
 func GetStringValue(oid asn1.ObjectIdentifier, community string, addr net.UDPAddr) (string, os.Error) {
 	conn, err := net.DialUDP("udp", nil, &addr)
 	if err != nil {
@@ -86,7 +60,7 @@ func GetStringValue(oid asn1.ObjectIdentifier, community string, addr net.UDPAdd
 	}
 	defer conn.Close()
 
-	r := GetRequest{
+	r := PDU{
 		RequestId:   199,
 		ErrorStatus: 0,
 		ErrorIndex:  0,
@@ -130,7 +104,7 @@ func GetStringValue(oid asn1.ObjectIdentifier, community string, addr net.UDPAdd
 		return "", err
 	}
 	switch response := pdu.(type) {
-	case *Response:
+	case *PDU:
 		s, ok := response.VarBindList[0].Value.([]byte)
 		if !ok {
 			return "", fmt.Errorf("Invalid value returned")

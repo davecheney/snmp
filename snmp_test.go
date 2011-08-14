@@ -16,7 +16,7 @@ func TestSNMPGetRequest(t *testing.T) {
 }
 
 func TestSNMPGetNextRequest(t *testing.T) {
-	r := GetNextRequest{
+	r := PDU{
 		RequestId:   199,
 		ErrorStatus: 0,
 		ErrorIndex:  0,

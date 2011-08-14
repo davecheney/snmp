@@ -7,6 +7,7 @@ include $(GOROOT)/src/Make.inc
 TARG=github.com/davecheney/snmp
 GOFILES=\
 	snmp.go\
+	pdu.go\
 	decode.go\
 
 include $(GOROOT)/src/Make.pkg
