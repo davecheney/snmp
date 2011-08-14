@@ -76,7 +76,7 @@ type Response struct {
 	RequestId int32
 	ErrorStatus int
 	ErrorIndex int
-//	VarBindList []VarBind
+	VarBindList []VarBind
 }
 
 func GetStringValue(oid asn1.ObjectIdentifier, community string, addr net.UDPAddr) (string, os.Error) {
@@ -120,32 +120,22 @@ func GetStringValue(oid asn1.ObjectIdentifier, community string, addr net.UDPAdd
 	}
 	
 	data = make([]byte, 1500)
-	read, err := conn.Read(data)
+	_, err = conn.Read(data)
 	if err != nil {
 		return "", err
 	}
-	
-	// return "", fmt.Errorf("%#v", data[:read])
-	
-	m = Message{}
-	_, err = asn1.Unmarshal(data[:read], &m)
+
+	pdu, err := decode(data)
 	if err != nil {
 		return "", err
 	}
-	
-	response := Response{}
-	// hack ANY -> IMPLICIT SEQUENCE
-	//m.Data.FullBytes[0] = 0x30
-	// return "", fmt.Errorf("%#v", m.Data.FullBytes)
-	_, err = asn1.Unmarshal(m.Data.FullBytes, &response)
-	if err != nil {
-		return "", fmt.Errorf("%#v, %#v, %s",m.Data.FullBytes, response, err)
+	switch response := pdu.(type) {
+	case *Response:
+		s, ok := response.VarBindList[0].Value.(string)
+		if !ok {
+			return "", fmt.Errorf("Invalid value returned")
+		}	
+		return s, nil
 	}
-	
-//	s, ok := response.VarBindList[0].Value.(string)
-//	if !ok {
-//		return "", fmt.Errorf("Invalid value returned")
-//	}	
-//	return s, nil
 	return "", nil
 }

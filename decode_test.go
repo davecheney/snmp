@@ -29,7 +29,7 @@ func TestDecodeASN1(t *testing.T) {
 		switch pdu := packet.(type) {
 		case *GetRequest:
 		case *Response:
-			// cool
+			t.Logf("%#v", pdu)
 		default:
 			t.Fatalf("Unknown pdu: %#v", pdu)
 		}
