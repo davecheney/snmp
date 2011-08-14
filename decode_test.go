@@ -14,7 +14,7 @@ func TestDecodeASN1(t *testing.T) {
 	}
 	defer p.Close()
 	for {
-		_, data, err := p.ReadPacket()
+		capture, err := p.ReadPacket()
 		if err != nil {
 			if err == os.EOF {
 				return
@@ -22,7 +22,7 @@ func TestDecodeASN1(t *testing.T) {
 			t.Fatal(err)
 		}
 		// 42 is the offset within the packet capture
-		packet, err := decode(data[42:])
+		packet, err := decode(capture.Body()[42:])
 		if err != nil {
 			t.Fatal(err)
 		}
