@@ -13,13 +13,14 @@ func decode(data []byte) (interface{}, os.Error) {
 		fmt.Errorf("%#v", data)
                 return nil, err
         }
-	switch m.Data.FullBytes[0] {
+	choice := m.Data.FullBytes[0]
+	switch choice {
 	case 0xa0:
 		// GetRequest
 		request := new(GetRequest)
 		// hack ANY -> IMPLICIT SEQUENCE
                 m.Data.FullBytes[0] = 0x30
-                _, err = asn1.Unmarshal(m.Data.FullBytes, &request)
+                _, err = asn1.Unmarshal(m.Data.FullBytes, request)
                 if err != nil {
                         return nil, fmt.Errorf("%#v, %#v, %s",m.Data.FullBytes, request, err)
                 }
@@ -28,14 +29,14 @@ func decode(data []byte) (interface{}, os.Error) {
 		// GetNextRequest
 	case 0xa2:
 		// Response
-		response := Response{}
+		response := new(Response)
 		// hack ANY -> IMPLICIT SEQUENCE
         	m.Data.FullBytes[0] = 0x30
-        	_, err = asn1.Unmarshal(m.Data.FullBytes, &response)
+        	_, err = asn1.Unmarshal(m.Data.FullBytes, response)
         	if err != nil {
                 	return nil, fmt.Errorf("%#v, %#v, %s",m.Data.FullBytes, response, err)
         	}
-		return &response, nil
+		return response, nil
 	case 0xa3:
 		// SetResponse
 	case 0xa4:
