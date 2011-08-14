@@ -15,17 +15,17 @@ func TestDecodeASN1(t *testing.T) {
 	defer p.Close()
 	for {
 		_, data, err := p.ReadPacket()
-        	if err != nil  {
+		if err != nil {
 			if err == os.EOF {
 				return
 			}
-                	t.Fatal(err)
-        	}
+			t.Fatal(err)
+		}
 		// 42 is the offset within the packet capture
-		packet, err := decode(data[42:]) 
+		packet, err := decode(data[42:])
 		if err != nil {
 			t.Fatal(err)
-		}	
+		}
 		switch pdu := packet.(type) {
 		case *GetRequest:
 		case *Response:
@@ -34,5 +34,5 @@ func TestDecodeASN1(t *testing.T) {
 			t.Fatalf("Unknown pdu: %#v", pdu)
 		}
 	}
-	
+
 }
