@@ -76,7 +76,7 @@ type Response struct {
 	RequestId int32
 	ErrorStatus int
 	ErrorIndex int
-	VarBindList []VarBind
+//	VarBindList []VarBind
 }
 
 func GetStringValue(oid asn1.ObjectIdentifier, community string, addr net.UDPAddr) (string, os.Error) {
@@ -135,16 +135,17 @@ func GetStringValue(oid asn1.ObjectIdentifier, community string, addr net.UDPAdd
 	
 	response := Response{}
 	// hack ANY -> IMPLICIT SEQUENCE
-	m.Data.FullBytes[0] = 0x30
+	//m.Data.FullBytes[0] = 0x30
 	// return "", fmt.Errorf("%#v", m.Data.FullBytes)
 	_, err = asn1.Unmarshal(m.Data.FullBytes, &response)
 	if err != nil {
 		return "", fmt.Errorf("%#v, %#v, %s",m.Data.FullBytes, response, err)
 	}
 	
-	s, ok := response.VarBindList[0].Value.(string)
-	if !ok {
-		return "", fmt.Errorf("Invalid value returned")
-	}	
-	return s, nil
+//	s, ok := response.VarBindList[0].Value.(string)
+//	if !ok {
+//		return "", fmt.Errorf("Invalid value returned")
+//	}	
+//	return s, nil
+	return "", nil
 }

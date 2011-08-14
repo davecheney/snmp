@@ -4,8 +4,9 @@
 
 include $(GOROOT)/src/Make.inc
 
-TARG=snmp
+TARG=github.com/davecheney/snmp
 GOFILES=\
 	snmp.go\
+	decode.go\
 
 include $(GOROOT)/src/Make.pkg
