@@ -26,7 +26,16 @@ func decode(data []byte) (interface{}, os.Error) {
 		}
 		return request, nil
 	case 0xa1:
-		// GetNextRequest
+                // GetNextRequest
+                request := new(GetRequest)
+                // hack ANY -> IMPLICIT SEQUENCE
+                m.Data.FullBytes[0] = 0x30
+                _, err = asn1.Unmarshal(m.Data.FullBytes, request)
+                if err != nil {
+                        return nil, fmt.Errorf("%#v, %#v, %s", m.Data.FullBytes, request, err)
+                }
+                return request, nil
+	
 	case 0xa2:
 		// Response
 		response := new(Response)
@@ -37,11 +46,8 @@ func decode(data []byte) (interface{}, os.Error) {
 			return nil, fmt.Errorf("%#v, %#v, %s", m.Data.FullBytes, response, err)
 		}
 		return response, nil
-	case 0xa3:
-		// SetResponse
-	case 0xa4:
-		// InformRequest
 	default:
+		return nil, fmt.Errorf("Unknown CHOICE: %x", choice)
 	}
-	return nil, fmt.Errorf("Unknown CHOICE")
+	panic("Unpossible!")
 }
