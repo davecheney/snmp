@@ -1,9 +1,9 @@
 package snmp
 
 import (
-	"testing"
-	"asn1"
+	"encoding/asn1"
 	"net"
+	"testing"
 )
 
 func TestSNMPGetRequest(t *testing.T) {

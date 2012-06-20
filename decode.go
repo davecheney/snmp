@@ -1,12 +1,11 @@
 package snmp
 
 import (
-	"asn1"
+	"encoding/asn1"
 	"fmt"
-	"os"
 )
 
-func decode(data []byte) (interface{}, os.Error) {
+func decode(data []byte) (interface{}, error) {
 	m := Message{}
 	_, err := asn1.Unmarshal(data, &m)
 	if err != nil {

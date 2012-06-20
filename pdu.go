@@ -1,7 +1,7 @@
 package snmp
 
 import (
-	"asn1"
+	"encoding/asn1"
 )
 
 type VarBind struct {
@@ -15,4 +15,3 @@ type PDU struct {
 	ErrorIndex  int
 	VarBindList []VarBind
 }
-

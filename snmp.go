@@ -1,10 +1,9 @@
 package snmp
 
 import (
-	"asn1"
-	"net"
-	"os"
+	"encoding/asn1"
 	"fmt"
+	"net"
 )
 
 type OctetString []byte
@@ -53,7 +52,7 @@ func Null() asn1.RawValue {
 	}
 }
 
-func GetStringValue(oid asn1.ObjectIdentifier, community string, addr net.UDPAddr) (string, os.Error) {
+func GetStringValue(oid asn1.ObjectIdentifier, community string, addr net.UDPAddr) (string, error) {
 	conn, err := net.DialUDP("udp", nil, &addr)
 	if err != nil {
 		return "", err
