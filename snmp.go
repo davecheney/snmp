@@ -37,7 +37,6 @@ func Any(bytes []byte) asn1.RawValue {
 		Tag:        0,
 		IsCompound: true,
 		Bytes:      bytes[2:],
-		FullBytes:  full,
 	}
 }
 
