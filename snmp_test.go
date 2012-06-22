@@ -1,7 +1,7 @@
 package snmp
 
 import (
-	"encoding/asn1"
+	asn1 "github.com/huin/asn1ber"
 	"net"
 	"testing"
 )
