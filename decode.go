@@ -2,6 +2,7 @@ package snmp
 
 import (
 	"fmt"
+
 	asn1 "github.com/huin/asn1ber"
 )
 

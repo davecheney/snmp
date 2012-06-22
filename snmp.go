@@ -2,8 +2,9 @@ package snmp
 
 import (
 	"fmt"
-	asn1 "github.com/huin/asn1ber"
 	"net"
+
+	asn1 "github.com/huin/asn1ber"
 )
 
 type OctetString []byte

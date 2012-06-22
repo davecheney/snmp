@@ -1,9 +1,10 @@
 package snmp
 
 import (
-	asn1 "github.com/huin/asn1ber"
 	"net"
 	"testing"
+
+	asn1 "github.com/huin/asn1ber"
 )
 
 func TestSNMPGetRequest(t *testing.T) {
