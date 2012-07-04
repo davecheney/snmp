@@ -1,12 +1,12 @@
 package snmp
 
 import (
-	"asn1"
+	asn1 "github.com/huin/asn1ber"
 )
 
 type VarBind struct {
 	Name  asn1.ObjectIdentifier
-	Value interface{}
+	Value asn1.RawValue
 }
 
 type PDU struct {
@@ -15,4 +15,3 @@ type PDU struct {
 	ErrorIndex  int
 	VarBindList []VarBind
 }
-

@@ -1,8 +1,8 @@
 package snmp
 
 import (
+	"io"
 	"testing"
-	"os"
 
 	"github.com/davecheney/pcap"
 )
@@ -16,7 +16,7 @@ func TestDecodeASN1(t *testing.T) {
 	for {
 		capture, err := p.ReadPacket()
 		if err != nil {
-			if err == os.EOF {
+			if err == io.EOF {
 				return
 			}
 			t.Fatal(err)
